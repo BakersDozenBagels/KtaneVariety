@@ -26,12 +26,12 @@ namespace Variety
 
         private static readonly int[][] _turns = new int[][]
         {
-                new int[] { 1, 2, 4, 3 },
-                new int[] { 0, 3, 5, 2 },
-                new int[] { 0, 1, 5, 4 },
-                new int[] { 0, 4, 5, 1 },
-                new int[] { 5, 3, 0, 2 },
-                new int[] { 1, 3, 4, 2 },
+                new int[] { 2, 4, 5, 3 },
+                new int[] { 5, 4, 2, 3 },
+                new int[] { 1, 4, 0, 3 },
+                new int[] { 5, 1, 2, 0 },
+                new int[] { 5, 0, 2, 1 },
+                new int[] { 0, 4, 1, 3 },
         };
 
         public override IEnumerable<ItemSelectable> SetUp(System.Random rnd)
@@ -60,21 +60,20 @@ namespace Variety
 
             Quaternion[] rots = new Quaternion[]
             {
-                Quaternion.identity, // 1 0
-                Quaternion.AngleAxis(90f, new Vector3(1f, 0f, 0f)), // 0 4
-                Quaternion.AngleAxis(-90f, new Vector3(1f, 0f, 0f)), // 5 1
-                Quaternion.AngleAxis(90f, new Vector3(0f, 0f, 1f)), // 3 0
-                Quaternion.AngleAxis(-90f, new Vector3(0f, 0f, 1f)), // 2 0
-                Quaternion.AngleAxis(180f, new Vector3(1f, 0f, 0f)) // 4 5
+                Quaternion.identity, // 1 5
+                Quaternion.AngleAxis(90f, new Vector3(1f, 0f, 0f)), // 5 0
+                Quaternion.AngleAxis(-90f, new Vector3(1f, 0f, 0f)), // 2 1
+                Quaternion.AngleAxis(90f, new Vector3(0f, 0f, 1f)), // 4 5
+                Quaternion.AngleAxis(-90f, new Vector3(0f, 0f, 1f)), // 3 5
+                Quaternion.AngleAxis(180f, new Vector3(1f, 0f, 0f)) // 0 2
             };
             int r = Random.Range(0, 6);
             _turn = Random.Range(0, 4);
-            _turn = 1;
 
             Quaternion rot2 = Quaternion.AngleAxis(_turn * 90f, new Vector3(0f, 1f, 0f)); // 1 = cw
 
             _prefab.Model.transform.localRotation = _trueRot = rot2 * rots[r];
-            _top = new int[] { 1, 0, 5, 3, 2, 4 }[r];
+            _top = new int[] { 1, 5, 2, 4, 3, 0 }[r];
             SetState(DigitsToState(_top, _turns[_top][_turn]), automatic: true);
 
             for(var i = 0; i < 4; i++)
@@ -88,19 +87,19 @@ namespace Variety
         {
             switch(up + "" + sl)
             {
-                case "01":
-                    return 0;
                 case "02":
-                    return 6;
+                    return 0;
                 case "03":
-                    return 12;
+                    return 6;
                 case "04":
+                    return 12;
+                case "05":
                     return 18;
-                case "10":
-                    return 1;
                 case "12":
-                    return 7;
+                    return 1;
                 case "13":
+                    return 7;
+                case "14":
                     return 13;
                 case "15":
                     return 19;
@@ -108,29 +107,29 @@ namespace Variety
                     return 2;
                 case "21":
                     return 8;
-                case "24":
+                case "23":
                     return 14;
-                case "25":
+                case "24":
                     return 20;
                 case "30":
                     return 3;
                 case "31":
                     return 9;
-                case "34":
+                case "32":
                     return 15;
                 case "35":
                     return 21;
                 case "40":
                     return 4;
-                case "42":
+                case "41":
                     return 10;
-                case "43":
+                case "42":
                     return 16;
                 case "45":
                     return 22;
-                case "51":
+                case "50":
                     return 5;
-                case "52":
+                case "51":
                     return 11;
                 case "53":
                     return 17;
@@ -164,9 +163,9 @@ namespace Variety
                         break;
                     case 2:
                         _prefab.StartCoroutine(Animate(_prefab.Model, _trueRot = Quaternion.Euler(90f, 0f, 0f) * _trueRot));
-                        int tp = _top;
+                        int q = _top;
                         _top = _turns[_top][_turn];
-                        _turn = Array.IndexOf(_turns[_top], 5 - tp);
+                        _turn = Array.IndexOf(_turns[_top], Flip(q));
                         break;
                     case 3:
                         _prefab.StartCoroutine(Animate(_prefab.Model, _trueRot = Quaternion.Euler(0f, 0f, 90f) * _trueRot));
@@ -180,6 +179,16 @@ namespace Variety
 
                 return false;
             };
+        }
+
+        private int Flip(int num)
+        {
+            num = 7 - num;
+            if(num == 6)
+                num = 0;
+            if(num == 7)
+                num = 1;
+            return num;
         }
 
         private IEnumerator Animate(Transform tr, Quaternion end)
@@ -228,7 +237,7 @@ namespace Variety
         public override string DescribeSolutionState(int state)
         {
             int top = state % 6;
-            int sl = new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != top && i != 5 - top).ToArray()[state / 6];
+            int sl = new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != top && i != Flip(top)).ToArray()[state / 6];
             return string.Format("rotate the die so you can see the {0} side and the {1} side is facing the status light", top, sl);
         }
 
@@ -240,7 +249,7 @@ namespace Variety
         public override string DescribeWhatUserShouldHaveDone(int desiredState)
         {
             int top = desiredState % 6;
-            int sl = new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != top && i != 5 - top).ToArray()[desiredState / 6];
+            int sl = new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != top && i != Flip(top)).ToArray()[desiredState / 6];
             return string.Format("you should have rotated the die so you can see the {0} side and the {1} side is facing the status light (you can see the {2} side and the {3} side is facing the status light)", top, sl, _top, _turns[_top][_turn]);
         }
 
@@ -276,7 +285,7 @@ namespace Variety
                 var adjs = new List<int>();
 
                 int stop = item % 6;
-                int sturn = Array.IndexOf(_turns[stop], new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != stop && i != 5 - stop).ToArray()[item / 6]);
+                int sturn = Array.IndexOf(_turns[stop], new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != stop && i != Flip(stop)).ToArray()[item / 6]);
                 int top, turn;
 
 
@@ -289,7 +298,7 @@ namespace Variety
                 adjs.Add(DigitsToState(top, _turns[top][turn]));
 
                 top = _turns[stop][sturn];
-                turn = Array.IndexOf(_turns[top], 5 - stop);
+                turn = Array.IndexOf(_turns[top],Flip(stop));
                 adjs.Add(DigitsToState(top, _turns[top][turn]));
 
                 top = _turns[stop][(sturn + 1) % 4];
