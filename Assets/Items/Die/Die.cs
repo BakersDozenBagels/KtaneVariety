@@ -44,6 +44,13 @@ namespace Variety
             Color c1 = Color.HSVToRGB(Random.value, Random.Range(0.1f, 0.2f), Random.Range(0.8f, 0.9f));
             Color c2 = Color.HSVToRGB(Random.value, Random.Range(0.5f, 0.6f), Random.Range(0.1f, 0.2f));
             var rends = _prefab.Model.GetComponentsInChildren<MeshRenderer>();
+            if(Random.Range(0, 2) == 0) // Could be a flavor? Light Die vs. Dark Die
+            {
+                Color tmp = c2;
+                c2 = c1;
+                c1 = tmp;
+            }
+
             foreach(var rend in rends)
             {
                 rend.materials[0].color = c1;
