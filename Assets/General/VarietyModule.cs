@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using Variety;
 
@@ -23,6 +24,16 @@ public class VarietyModule : MonoBehaviour
     public MeshRenderer[] StateSegments;
     public Material StateSegmentOn;
     public Material StateSegmentOff;
+    private KMColorblindMode _colorblind;
+    public KMColorblindMode Colorblind // This is a property to maintain Unity's serialization.
+    {
+        get
+        {
+            if(_colorblind == null)
+                _colorblind = GetComponent<KMColorblindMode>();
+            return _colorblind;
+        }
+    }
 
     public DummyPrefab DummyTemplate;
     public WirePrefab WireTemplate;
@@ -72,6 +83,7 @@ public class VarietyModule : MonoBehaviour
 
     private object[] _flavorOrder;
     private bool _isSolved;
+    private bool _colorblindEnabled;
 
     static List<T> makeList<T>(params T[] items) { return new List<T>(items); }
 
@@ -96,7 +108,8 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(10, new MazeFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new LetterDisplayFactory()),
             
-            new ItemFactoryInfo(2, new DieFactory()));
+            //new ItemFactoryInfo(2, new DieFactory()
+            ));
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
         ruleSeedRnd.ShuffleFisherYates(_flavorOrder);
@@ -153,7 +166,12 @@ public class VarietyModule : MonoBehaviour
 
         items.Sort((a, b) => Array.IndexOf(_flavorOrder, a.Flavor).CompareTo(Array.IndexOf(_flavorOrder, b.Flavor)));
 
-        TwitchHelpMessage = items.Select(item => item.TwitchHelpMessage).Distinct().OrderBy(x => x).Join(" | ");
+        TwitchHelpMessage = items
+            .Select(item => item.TwitchHelpMessage)
+            .Distinct()
+            .OrderBy(x => x)
+            .Concat(new string[] { "!{0} colorblind" })
+            .Join(" | ");
 
         StartCoroutine(AfterAwake(items, rnd));
     }
@@ -228,6 +246,8 @@ public class VarietyModule : MonoBehaviour
         _expectedStates = expectedStatesWithFewestZeros;
         var finalState = stateWithFewestZeros;
 
+        _colorblindEnabled = Colorblind.ColorblindModeActive;
+
         Debug.LogFormat(@"[Variety #{0}] Expected actions:", _moduleId);
         for (var i = 0; i < _items.Length; i++)
         {
@@ -240,6 +260,7 @@ public class VarietyModule : MonoBehaviour
             finalState /= (ulong) _items[i].NumStates;
 
             _items[i].StateSet = StateSet(i);
+            _items[i].SetColorblind(_colorblindEnabled);
         }
     }
 
@@ -358,12 +379,22 @@ public class VarietyModule : MonoBehaviour
         "!{0} letters cycle [cycle each letter slot]",
         "!{0} letters ACE [set letter display]",
         "!{0} braille 125 [set Braille display]",
-        "!{0} 3x3 maze UDLR [make moves in the 3×3 maze]"
+        "!{0} 3x3 maze UDLR [make moves in the 3×3 maze]",
+        "!{0} die 1234 [press the rotation buttons; buttons are numbered in reading order]",
+        "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414
 
     private IEnumerator ProcessTwitchCommand(string command)
     {
+        var m = Regex.IsMatch(command, @"^\s*(?:colorblind|cb)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        if(m)
+        {
+            _colorblindEnabled ^= true;
+            foreach(var item in _items)
+                item.SetColorblind(_colorblindEnabled);
+        }
+
         var ret = _items.Select(item => item.ProcessTwitchCommand(command)).FirstOrDefault(result => result != null);
         if (ret != null)
         {

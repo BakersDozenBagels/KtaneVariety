@@ -119,6 +119,7 @@ namespace Variety
             public Pt Normal;
             public Vector3 V { get { return new Vector3((float) Point.X, (float) Point.Y, (float) Point.Z); } }
             public Vector3 N { get { return new Vector3((float) Normal.X, (float) Normal.Y, (float) Normal.Z); } }
+            public Vector2 UV;
         }
 
         private static Mesh toMesh(VertexInfo[][] triangles)
@@ -127,7 +128,8 @@ namespace Variety
             {
                 vertices = triangles.SelectMany(t => t).Select(v => v.V).ToArray(),
                 normals = triangles.SelectMany(t => t).Select(v => v.N).ToArray(),
-                triangles = triangles.SelectMany(t => t).Select((v, i) => i).ToArray()
+                triangles = triangles.SelectMany(t => t).Select((v, i) => i).ToArray(),
+                uv = triangles.SelectMany(t => t).Select(v => v.UV).ToArray()
             };
         }
 
@@ -160,11 +162,11 @@ namespace Variety
                 new { Start = p, End = p + (pts[i + 1] - p) + (p - pts[i - 1]) }).ToArray();
 
             return Enumerable.Range(0, pts.Length)
-                .Select(ix => new { Axis = axes[ix], Perp = pts[ix] + normals[ix], Point = pts[ix] })
+                .Select(ix => new { Axis = axes[ix], Perp = pts[ix] + normals[ix], Point = pts[ix], U = ix / (float)pts.Length })
                 .Select(inf => Enumerable.Range(0, revSteps)
                     .Select(i => 360 * i / revSteps)
-                    .Select(angle => inf.Perp.Rotate(inf.Axis.Start, inf.Axis.End, angle))
-                    .Select(p => new VertexInfo { Point = p, Normal = p - inf.Point }).Reverse().ToArray())
+                    .Select(angle => new { Pt = inf.Perp.Rotate(inf.Axis.Start, inf.Axis.End, angle), UV = new Vector2(inf.U, angle / 360f) })
+                    .Select(p => new VertexInfo { Point = p.Pt, Normal = p.Pt - inf.Point, UV = p.UV }).Reverse().ToArray())
                 .ToArray();
         }
 
