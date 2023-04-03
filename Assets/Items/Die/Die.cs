@@ -8,15 +8,13 @@ using Random = UnityEngine.Random;
 
 namespace Variety
 {
-    // Dice:
-    //
-    // n is 24. Rotate the die such that you can see the face labeled as the value modulo 6, and the face with the pth smallest label is facing the status light, where p is the value divided by 6 (rounded down).
     public class Die : Item
     {
         private DiePrefab _prefab;
         private int _topLeftCell;
         private int _top, _turn;
         private Quaternion _trueRot = Quaternion.identity;
+        private static readonly Vector3 SLPosition = new Vector3(0.075167f, 0f, 0.076057f);
 
         public Die(VarietyModule module, int tlc) : base(module, CellRect(tlc, 2, 2))
         {
@@ -39,7 +37,7 @@ namespace Variety
             _prefab = UnityEngine.Object.Instantiate(Module.DieTemplate, Module.transform);
             _prefab.transform.localPosition = new Vector3(GetXOfCellRect(_topLeftCell, 2), .015f, GetYOfCellRect(_topLeftCell, 2));
             _prefab.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            _prefab.transform.localRotation = Quaternion.identity;
+            _prefab.transform.localRotation = Quaternion.FromToRotation(new Vector3(1f, 0f, 1f), SLPosition - new Vector3(_prefab.transform.localPosition.x, 0f, _prefab.transform.localPosition.z));
 
             Color c1 = Color.HSVToRGB(Random.value, Random.Range(0.1f, 0.2f), Random.Range(0.8f, 0.9f));
             Color c2 = Color.HSVToRGB(Random.value, Random.Range(0.5f, 0.6f), Random.Range(0.1f, 0.2f));
@@ -298,7 +296,7 @@ namespace Variety
                 adjs.Add(DigitsToState(top, _turns[top][turn]));
 
                 top = _turns[stop][sturn];
-                turn = Array.IndexOf(_turns[top],Flip(stop));
+                turn = Array.IndexOf(_turns[top], Flip(stop));
                 adjs.Add(DigitsToState(top, _turns[top][turn]));
 
                 top = _turns[stop][(sturn + 1) % 4];
@@ -319,7 +317,7 @@ namespace Variety
                     }
                 }
             }
-        done:
+            done:
             var moves = new List<int>();
             var curPos = desiredState;
             var iter = 0;
