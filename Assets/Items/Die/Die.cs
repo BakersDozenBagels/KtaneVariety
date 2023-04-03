@@ -15,11 +15,13 @@ namespace Variety
         private int _top, _turn;
         private Quaternion _trueRot = Quaternion.identity;
         private static readonly Vector3 SLPosition = new Vector3(0.075167f, 0f, 0.076057f);
+        private bool _flavor;
 
-        public Die(VarietyModule module, int tlc) : base(module, CellRect(tlc, 2, 2))
+        public Die(VarietyModule module, int tlc, bool flavor) : base(module, CellRect(tlc, 2, 2))
         {
             _topLeftCell = tlc;
             SetState(-1, automatic: true);
+            _flavor = flavor;
         }
 
         private static readonly int[][] _turns = new int[][]
@@ -42,7 +44,7 @@ namespace Variety
             Color c1 = Color.HSVToRGB(Random.value, Random.Range(0.1f, 0.2f), Random.Range(0.8f, 0.9f));
             Color c2 = Color.HSVToRGB(Random.value, Random.Range(0.5f, 0.6f), Random.Range(0.1f, 0.2f));
             var rends = _prefab.Model.GetComponentsInChildren<MeshRenderer>();
-            if (Random.Range(0, 2) == 0) // Could be a flavor? Light Die vs. Dark Die
+            if (!_flavor)
             {
                 Color tmp = c2;
                 c2 = c1;
@@ -203,33 +205,61 @@ namespace Variety
             tr.localPosition = new Vector3(0f, 0.009f);
         }
 
-        public override int NumStates { get { return 24; } }
-        public override object Flavor { get { return "Die"; } }
-        public override string ToString() { return "Die"; }
-        public override string TwitchHelpMessage { get { return "!{0} die 1234 [press the rotation buttons; buttons are numbered in reading order]"; } }
-        public override string DescribeWhatUserDid() { return "you rotated the die"; }
+        public override int NumStates
+        {
+            get
+            {
+                return 24;
+            }
+        }
+
+        public override object Flavor
+        {
+            get
+            {
+                return _flavor ? "DieDOL" : "DieLOD";
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} die", _flavor ? "dark-on-light" : "light-on-dark");
+        }
+
+        public override string TwitchHelpMessage
+        {
+            get
+            {
+                return "!{0} light-on-dark die 1234 [press the rotation buttons; buttons are numbered from the one pointing towards the status light going clockwise]";
+            }
+        }
 
         public override string DescribeSolutionState(int state)
         {
             int top = state % 6;
             int sl = new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != top && i != Flip(top)).ToArray()[state / 6];
-            return string.Format("rotate the die so you can see the {0} side and the {1} side is facing the status light", top, sl);
+            return string.Format("rotate the {2} die so you can see the {0} side and the {1} side is facing the status light", top, sl, _flavor ? "dark-on-light" : "light-on-dark");
+        }
+
+        public override string DescribeWhatUserDid()
+        {
+            return string.Format("you rotated the {0} die", _flavor ? "dark-on-light" : "light-on-dark");
         }
 
         public override string DescribeWhatUserShouldHaveDone(int desiredState)
         {
             int top = desiredState % 6;
             int sl = new int[] { 0, 1, 2, 3, 4, 5 }.Where(i => i != top && i != Flip(top)).ToArray()[desiredState / 6];
-            return string.Format("you should have rotated the die so you can see the {0} side and the {1} side is facing the status light (you can see the {2} side and the {3} side is facing the status light)", top, sl, _top, _turns[_top][_turn]);
+            return string.Format("you should have rotated the {4} die so you can see the {0} side and the {1} side is facing the status light (you can see the {2} side and the {3} side is facing the status light)", top, sl, _top, _turns[_top][_turn], _flavor ? "dark-on-light" : "light-on-dark");
         }
 
         public override IEnumerator ProcessTwitchCommand(string command)
         {
-
-            var m = Regex.Match(command, @"^\s*die\s+(\d+)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-            if (m.Success && m.Groups[1].Value.All(ch => ch >= '1' && ch <= '4'))
+            var m = Regex.Match(command, (_flavor ? @"^\s*(?:dark-?on-?light|do?l)" : @"^\s*(?:light-?on-?dark|lo?d)") + @"\s+die\s+([1-4]+)\s*$", RegexOptions.IgnoreCase | RegexOptions.ECMAScript);
+            if (m.Success)
             {
-                foreach (var sel in m.Groups[1].Value.Select(c => _prefab.Selectables[c - '1']))
+                int[] shuffle = new int[] { 1, 3, 2, 0 };
+                foreach (var sel in m.Groups[1].Value.Select(c => _prefab.Selectables[shuffle[c - '1']]))
                 {
                     sel.OnInteract();
                     yield return new WaitForSeconds(0.1f);
