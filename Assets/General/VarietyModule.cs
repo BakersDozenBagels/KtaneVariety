@@ -50,6 +50,7 @@ public class VarietyModule : MonoBehaviour
     public ButtonPrefab ButtonTemplate;
     public LedPrefab LedTemplate;
     public DiePrefab DieTemplate;
+    public TimerPrefab TimerTemplate;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId;
@@ -106,9 +107,10 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(7, new KeypadFactory()),
             new ItemFactoryInfo(7, new ColoredKeypadFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new MazeFactory(ruleSeedRnd)),
-            new ItemFactoryInfo(10, new LetterDisplayFactory())
-            
-            //new ItemFactoryInfo(2, new DieFactory()
+            new ItemFactoryInfo(10, new LetterDisplayFactory()),
+
+            new ItemFactoryInfo(2, new DieFactory()),
+            new ItemFactoryInfo(1, new TimerFactory())
             );
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
@@ -153,6 +155,9 @@ public class VarietyModule : MonoBehaviour
         ModuleSelectable.Children = children;
         ModuleSelectable.ChildRowLength = W;
         ModuleSelectable.UpdateChildren();
+
+        foreach(var item in items)
+            Module.OnActivate += item.OnActivate;
 
 #if UNITY_EDITOR
         //for (var cell = 0; cell < W * H; cell++)
@@ -381,6 +386,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} braille 125 [set Braille display]",
         "!{0} 3x3 maze UDLR [make moves in the 3×3 maze]",
         "!{0} die 1234 [press the rotation buttons; buttons are numbered from the one pointing towards the status light going clockwise]",
+        "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]",
         "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414

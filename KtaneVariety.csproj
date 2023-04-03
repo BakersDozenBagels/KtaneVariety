@@ -296,6 +296,10 @@
     <Compile Include="Assets\Items\Switch\SwitchColor.cs" />
     <Compile Include="Assets\Items\Switch\SwitchFactory.cs" />
     <Compile Include="Assets\Items\Switch\SwitchPrefab.cs" />
+    <Compile Include="Assets\Items\Timer\Timer.cs" />
+    <Compile Include="Assets\Items\Timer\TimerFactory.cs" />
+    <Compile Include="Assets\Items\Timer\TimerPrefab.cs" />
+    <Compile Include="Assets\Items\Timer\TimerType.cs" />
     <Compile Include="Assets\Items\Wire\Wire.cs" />
     <Compile Include="Assets\Items\Wire\WireColor.cs" />
     <Compile Include="Assets\Items\Wire\WireFactory.cs" />
