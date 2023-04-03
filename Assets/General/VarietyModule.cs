@@ -29,7 +29,7 @@ public class VarietyModule : MonoBehaviour
     {
         get
         {
-            if(_colorblind == null)
+            if (_colorblind == null)
                 _colorblind = GetComponent<KMColorblindMode>();
             return _colorblind;
         }
@@ -107,9 +107,9 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(7, new ColoredKeypadFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new MazeFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new LetterDisplayFactory())
-            
-            //new ItemFactoryInfo(2, new DieFactory()
-            );
+
+        //new ItemFactoryInfo(2, new DieFactory())
+        );
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
         ruleSeedRnd.ShuffleFisherYates(_flavorOrder);
@@ -387,12 +387,13 @@ public class VarietyModule : MonoBehaviour
 
     private IEnumerator ProcessTwitchCommand(string command)
     {
-        var m = Regex.IsMatch(command, @"^\s*(?:colorblind|cb)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        if(m)
+        if (Regex.IsMatch(command, @"^\s*(?:colorblind|cb)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
+            yield return null;
             _colorblindEnabled ^= true;
-            foreach(var item in _items)
+            foreach (var item in _items)
                 item.SetColorblind(_colorblindEnabled);
+            yield break;
         }
 
         var ret = _items.Select(item => item.ProcessTwitchCommand(command)).FirstOrDefault(result => result != null);
