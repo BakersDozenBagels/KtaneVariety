@@ -106,10 +106,10 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(7, new KeypadFactory()),
             new ItemFactoryInfo(7, new ColoredKeypadFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new MazeFactory(ruleSeedRnd)),
-            new ItemFactoryInfo(10, new LetterDisplayFactory()),
+            new ItemFactoryInfo(10, new LetterDisplayFactory())
             
             //new ItemFactoryInfo(2, new DieFactory()
-            ));
+            );
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
         ruleSeedRnd.ShuffleFisherYates(_flavorOrder);

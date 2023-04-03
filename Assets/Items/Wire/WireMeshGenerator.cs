@@ -59,7 +59,7 @@ namespace Variety
                     .SelectConsecutivePairs(false, (one, two) => bézier(one.Point, one.ControlAfter, two.ControlBefore, two.Point, bézierSteps))
                     .SelectMany((x, i) => i == 0 ? x : x.Skip(1))
                     .ToArray();
-                return toMesh(createFaces(false, true, tubeFromCurve(points, thickness, tubeRevSteps)));
+                return toMesh(createFaces(false, true, tubeFromCurve(points, thickness, tubeRevSteps, 0f, 1f)));
             }
 
             var partialWire = new Func<IEnumerable<CPC>, IEnumerable<VertexInfo[]>>(pts =>
@@ -74,7 +74,7 @@ namespace Variety
 
                 if (piece == WirePiece.Cut)
                 {
-                    var tube = tubeFromCurve(points, thickness, tubeRevSteps).SkipLast(reserveForCopper).ToArray();
+                    var tube = tubeFromCurve(points, thickness, tubeRevSteps, 0.5f, 1f).SkipLast(reserveForCopper).ToArray();
                     var capCenter = points[points.Length - 1 - reserveForCopper];
                     var normal = capCenter - points[points.Length - 2 - reserveForCopper];
                     var cap = tube[tube.Length - 1].SelectConsecutivePairs(true, (v1, v2) => new[] { capCenter, v2.Point, v1.Point }.Select(p => new VertexInfo { Point = p, Normal = normal }).ToArray()).ToArray();
@@ -82,7 +82,7 @@ namespace Variety
                 }
                 else
                 {
-                    var copper = tubeFromCurve(points.TakeLast(reserveForCopper + 2).SkipLast(discardCopper).ToArray(), thickness / 2, tubeRevSteps).Skip(1).ToArray();
+                    var copper = tubeFromCurve(points.TakeLast(reserveForCopper + 2).SkipLast(discardCopper).ToArray(), thickness / 2, tubeRevSteps, 0f, 0.5f).Skip(1).ToArray();
                     var copperCapCenter = points[points.Length - 1 - discardCopper];
                     var copperNormal = copperCapCenter - points[points.Length - 2];
                     var copperCap = copper[copper.Length - 1].SelectConsecutivePairs(true, (v1, v2) => new[] { copperCapCenter, v2.Point, v1.Point }.Select(p => new VertexInfo { Point = p, Normal = copperNormal }).ToArray()).ToArray();
@@ -148,7 +148,7 @@ namespace Variety
                     .ToArray();
         }
 
-        private static VertexInfo[][] tubeFromCurve(Pt[] pts, double radius, int revSteps)
+        private static VertexInfo[][] tubeFromCurve(Pt[] pts, double radius, int revSteps, float minU, float maxU)
         {
             var normals = new Pt[pts.Length];
             normals[0] = ((pts[1] - pts[0]) * pt(0, 1, 0)).Normalize() * radius;
@@ -162,7 +162,7 @@ namespace Variety
                 new { Start = p, End = p + (pts[i + 1] - p) + (p - pts[i - 1]) }).ToArray();
 
             return Enumerable.Range(0, pts.Length)
-                .Select(ix => new { Axis = axes[ix], Perp = pts[ix] + normals[ix], Point = pts[ix], U = ix / (float)pts.Length })
+                .Select(ix => new { Axis = axes[ix], Perp = pts[ix] + normals[ix], Point = pts[ix], U = Mathf.Lerp(minU, maxU, ix / (float)pts.Length) })
                 .Select(inf => Enumerable.Range(0, revSteps)
                     .Select(i => 360 * i / revSteps)
                     .Select(angle => new { Pt = inf.Perp.Rotate(inf.Axis.Start, inf.Axis.End, angle), UV = new Vector2(inf.U, angle / 360f) })
