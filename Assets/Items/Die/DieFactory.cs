@@ -11,7 +11,8 @@ namespace Variety
         {
             get
             {
-                yield return "Die";
+                yield return "DieLOD";
+                yield return "DieDOL";
             }
         }
 
@@ -28,7 +29,7 @@ namespace Variety
             claimRect(taken, location, 2, 2);
             taken.Add(this);
 
-            return new Die(module, location);
+            return new Die(module, location, rnd.Next(2) == 1);
         }
     }
 }

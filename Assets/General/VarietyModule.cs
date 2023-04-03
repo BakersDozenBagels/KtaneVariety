@@ -380,7 +380,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} letters ACE [set letter display]",
         "!{0} braille 125 [set Braille display]",
         "!{0} 3x3 maze UDLR [make moves in the 3×3 maze]",
-        "!{0} die 1234 [press the rotation buttons; buttons are numbered in reading order]",
+        "!{0} die 1234 [press the rotation buttons; buttons are numbered from the one pointing towards the status light going clockwise]",
         "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414
