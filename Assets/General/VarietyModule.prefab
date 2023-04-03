@@ -372,6 +372,8 @@ MonoBehaviour:
     type: 2}
   DieTemplate: {fileID: 114645564530897206, guid: d64a64720ee05004eb83b745009e1112,
     type: 2}
+  TimerTemplate: {fileID: 114313467815773154, guid: f477f898ef08a8e4bbc96f9ce8d58692,
+    type: 2}
 --- !u!114 &11489324
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8035,7 +8037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1cfb889a07d5fd4e9baed7960bb397f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _colorblindMode: 0
+  _colorblindMode: 1
 --- !u!114 &114882687283486170
 MonoBehaviour:
   m_ObjectHideFlags: 1
