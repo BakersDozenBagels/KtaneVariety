@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 4067335675960432}
   - component: {fileID: 23821808908416632}
   - component: {fileID: 102597723769801824}
+  - component: {fileID: 114325688328476152}
   m_Layer: 0
   m_Name: Colorblind
   m_TagString: Untagged
@@ -325,6 +326,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - KT/Mobile/DiffuseTint
+--- !u!114 &114325688328476152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961764884754588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - GUI/KT 3D Text Diffuse
 --- !u!114 &114617826889645226
 MonoBehaviour:
   m_ObjectHideFlags: 1
