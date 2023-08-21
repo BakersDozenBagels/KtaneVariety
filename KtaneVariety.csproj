@@ -13,14 +13,12 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.4.22f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -251,6 +249,9 @@
     <Compile Include="Assets\Items\BrailleDisplay\BrailleDisplay.cs" />
     <Compile Include="Assets\Items\BrailleDisplay\BrailleDisplayFactory.cs" />
     <Compile Include="Assets\Items\BrailleDisplay\BrailleDisplayPrefab.cs" />
+    <Compile Include="Assets\Items\Bulb\Bulb.cs" />
+    <Compile Include="Assets\Items\Bulb\BulbFactory.cs" />
+    <Compile Include="Assets\Items\Bulb\BulbPrefab.cs" />
     <Compile Include="Assets\Items\Button\Button.cs" />
     <Compile Include="Assets\Items\Button\ButtonColor.cs" />
     <Compile Include="Assets\Items\Button\ButtonFactory.cs" />
