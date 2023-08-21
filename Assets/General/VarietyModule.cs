@@ -51,6 +51,7 @@ public class VarietyModule : MonoBehaviour
     public LedPrefab LedTemplate;
     public DiePrefab DieTemplate;
     public TimerPrefab TimerTemplate;
+    public BulbPrefab BulbTemplate;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId;
@@ -110,7 +111,8 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(10, new LetterDisplayFactory()),
 
             new ItemFactoryInfo(2, new DieFactory()),
-            new ItemFactoryInfo(1, new TimerFactory())
+            new ItemFactoryInfo(1, new TimerFactory()),
+            new ItemFactoryInfo(2, new BulbFactory())
             );
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
@@ -387,6 +389,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} 3x3 maze UDLR [make moves in the 3×3 maze]",
         "!{0} die 1234 [press the rotation buttons; buttons are numbered from the one pointing towards the status light going clockwise]",
         "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]",
+        "!{0} red bulb ..- [transmit ..- on the red bulb] | !{0} red bulb reset [show flashing code again]",
         "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414
