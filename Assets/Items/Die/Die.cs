@@ -258,15 +258,20 @@ namespace Variety
             var m = Regex.Match(command, (_flavor ? @"^\s*(?:dark-?on-?light|do?l)" : @"^\s*(?:light-?on-?dark|lo?d)") + @"\s+die\s+([1-4]+)\s*$", RegexOptions.IgnoreCase | RegexOptions.ECMAScript);
             if (m.Success)
             {
-                int[] shuffle = new int[] { 1, 3, 2, 0 };
-                foreach (var sel in m.Groups[1].Value.Select(c => _prefab.Selectables[shuffle[c - '1']]))
-                {
-                    sel.OnInteract();
-                    yield return new WaitForSeconds(0.1f);
-                }
+                return TwitchPress(m.Groups[1].Value);
             }
 
-            yield break;
+            return null;
+        }
+
+        private IEnumerator TwitchPress(string b)
+        {
+            int[] shuffle = new int[] { 1, 3, 2, 0 };
+            foreach (var sel in b.Select(c => _prefab.Selectables[shuffle[c - '1']]))
+            {
+                sel.OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         public override IEnumerable<object> TwitchHandleForcedSolve(int desiredState)

@@ -116,13 +116,24 @@ namespace Variety
 
         public override IEnumerator ProcessTwitchCommand(string command)
         {
-            if (Regex.IsMatch("", command) && !_running)
-                _prefab.Selectable.OnInteract();
-
-            var rx = new Regex(@"^\s*(?:" + (FlavorType == TimerType.Ascending ? "acsending|asc" : "descending|desc?") + @")\s+timer\s+([0-" + (char)('/' + _a) + "][0-" + (char)('/' + _b) + @"])\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            var rx = new Regex(@"^\s*(?:" + (FlavorType == TimerType.Ascending ? "acsending|asc" : "descending|desc?") + @")\s+timer\s+([0-" + (char)('/' + _a) + @"]\s*[0-" + (char)('/' + _b) + @"])\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             var m = rx.Match(command);
-            if (!m.Success)
+            if (!_running && Regex.IsMatch(command, @"^\s*(?:" + (FlavorType == TimerType.Ascending ? "acsending|asc" : "descending|desc?") + @")\s+timer\s+reset\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+                || m.Success)
+            {
+                return ProcessTwitchCommandInternal(m.Success ? m.Groups[1].Value : "");
+            }
+            return null;
+        }
+
+        public IEnumerator ProcessTwitchCommandInternal(string command)
+        {
+            if (command.Length == 0)
+            {
+                _prefab.Selectable.OnInteract();
+                yield return new WaitForSeconds(0.1f);
                 yield break;
+            }
 
             if (!_running)
             {
@@ -130,10 +141,10 @@ namespace Variety
                 yield return new WaitForSeconds(0.1f);
             }
 
-            var st = m.Groups[1].Value;
-            var state = (st[0] - '0') * _b + st[1] - '0';
+            var state = (command.First() - '0') * _b + command.Last() - '0';
             yield return new WaitUntil(() => _displayedTime == state);
             _prefab.Selectable.OnInteract();
+            yield return new WaitForSeconds(0.1f);
         }
 
         public override IEnumerable<object> TwitchHandleForcedSolve(int desiredState)
@@ -141,7 +152,7 @@ namespace Variety
             if (State == desiredState)
                 yield break;
 
-            if(!_running)
+            if (!_running)
             {
                 _prefab.Selectable.OnInteract();
                 yield return new WaitForSeconds(0.1f);
