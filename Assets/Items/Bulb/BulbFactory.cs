@@ -22,7 +22,9 @@ namespace Variety
             var color = availableColors[rnd.Next(0, availableColors.Length)];
             claimRect(taken, topLeftCell, 2, 2);
             taken.Add(color);
-            return new Bulb(module, topLeftCell, color, rnd.Next(10,26));
+            var x = (float)rnd.NextDouble() * 1.5f;
+            int y = UnityEngine.Mathf.CeilToInt(UnityEngine.Mathf.Pow(2, 5f - x) * 26f / 32f);
+            return new Bulb(module, topLeftCell, color, y);
         }
 
         public override IEnumerable<object> Flavors { get { return Enum.GetValues(typeof(Bulb.BulbColor)).Cast<object>(); } }

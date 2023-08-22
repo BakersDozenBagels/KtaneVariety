@@ -19,11 +19,11 @@ namespace Variety
         public override Item Generate(VarietyModule module, HashSet<object> taken, Random rnd)
         {
             var availableCells = Enumerable.Range(0, W * H).Where(c => isRectAvailable(taken, c, 2, 1)).ToArray();
-            if (availableCells.Length == 0)
+            if(availableCells.Length == 0)
                 return null;
 
             var availableFlavors = ((TimerType[])Enum.GetValues(typeof(TimerType))).Where(c => !taken.Contains(c)).ToArray();
-            if (availableFlavors.Length == 0)
+            if(availableFlavors.Length == 0)
                 return null;
 
             var cell = availableCells[rnd.Next(0, availableCells.Length)];
@@ -33,7 +33,7 @@ namespace Variety
             taken.Add(flavor);
 
             int a;
-            return new Timer(module, cell, flavor, a = rnd.Next(0, 4), rnd.Next(0, a == 3 ? 2 : a== 2 ? 3 : 4));
+            return new Timer(module, cell, flavor, a = rnd.Next(0, 4), rnd.Next(0, 3 - a));
         }
     }
 }
