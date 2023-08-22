@@ -200,7 +200,7 @@ public class VarietyModule : MonoBehaviour
 
         for (var i = 0; i < 100 || itemsWithFewestZeros == null; i++)
         {
-            ulong state = Enumerable.Range(0, 8).Aggregate(0UL, (p, n) => (p << 8) | (uint) random.Next(0, 256)) % 1000000000000UL;
+            ulong state = Enumerable.Range(0, 8).Aggregate(0UL, (p, n) => (p << 8) | (uint) random.Next(0, 256)) % 100000000000000UL;
             ulong reconstructedState = 0UL;
             ulong mult = 1UL;
 
@@ -245,7 +245,7 @@ public class VarietyModule : MonoBehaviour
 
         var stateStr = stateWithFewestZeros.ToString();
         Debug.LogFormat(@"[Variety #{0}] State: {1}", _moduleId, stateStr);
-        for (var digit = 0; digit < 12; digit++)
+        for (var digit = 0; digit < 14; digit++)
             for (var segment = 0; segment < 7; segment++)
                 StateSegments[digit * 7 + segment].sharedMaterial = digit >= stateStr.Length || _segmentMap[stateStr[stateStr.Length - 1 - digit] - '0'][segment] == '0' ? StateSegmentOff : StateSegmentOn;
 
