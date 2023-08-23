@@ -44,7 +44,7 @@ namespace Variety
         public override IEnumerable<ItemSelectable> SetUp(Random rnd)
         {
             _prefab = Object.Instantiate(Module.TimerTemplate, Module.transform);
-            _prefab.transform.localPosition = new Vector3(GetXOfCellRect(Cells[0], 2), .015f, GetYOfCellRect(Cells[0], 1));
+            _prefab.transform.localPosition = new Vector3(GetXOfCellRect(Cells[0], 3), .015f, GetYOfCellRect(Cells[0], 2));
             _prefab.transform.localScale = Vector3.one;
             _prefab.Selectable.OnInteract += Press;
             yield return new ItemSelectable(_prefab.Selectable, Cells[0]);
