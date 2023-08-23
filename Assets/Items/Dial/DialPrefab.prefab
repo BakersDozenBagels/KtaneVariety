@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 4235276936722534}
   - component: {fileID: 33457079667612380}
   - component: {fileID: 23195151236387340}
+  - component: {fileID: 114115477969811392}
   m_Layer: 0
   m_Name: Dial
   m_TagString: Untagged
@@ -282,6 +283,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighlightScale: {x: 1, y: 1, z: 1}
   OutlineAmount: 0
+--- !u!114 &114115477969811392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1950082947447006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Mobile/DiffuseTint
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114763429153775886
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KtaneVariety", "KtaneVariety.csproj", "{03A94E0F-3143-E080-B0AC-F009EC705D49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Variety", "Variety.csproj", "{E80C6ECD-D25C-1C22-576B-1ED6F093BF10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KtaneVariety.Editor", "KtaneVariety.Editor.csproj", "{E6A550DE-6CEC-ED64-8F4C-E73DB818FBB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Variety-Editor", "Variety-Editor.csproj", "{6F58FB32-D3D1-7081-924E-7456A6F2451E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +11,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{03A94E0F-3143-E080-B0AC-F009EC705D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03A94E0F-3143-E080-B0AC-F009EC705D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03A94E0F-3143-E080-B0AC-F009EC705D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03A94E0F-3143-E080-B0AC-F009EC705D49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6A550DE-6CEC-ED64-8F4C-E73DB818FBB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6A550DE-6CEC-ED64-8F4C-E73DB818FBB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6A550DE-6CEC-ED64-8F4C-E73DB818FBB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6A550DE-6CEC-ED64-8F4C-E73DB818FBB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80C6ECD-D25C-1C22-576B-1ED6F093BF10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80C6ECD-D25C-1C22-576B-1ED6F093BF10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80C6ECD-D25C-1C22-576B-1ED6F093BF10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80C6ECD-D25C-1C22-576B-1ED6F093BF10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F58FB32-D3D1-7081-924E-7456A6F2451E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F58FB32-D3D1-7081-924E-7456A6F2451E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F58FB32-D3D1-7081-924E-7456A6F2451E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F58FB32-D3D1-7081-924E-7456A6F2451E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
