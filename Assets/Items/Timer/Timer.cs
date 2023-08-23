@@ -118,7 +118,7 @@ namespace Variety
         {
             var rx = new Regex(@"^\s*(?:" + (FlavorType == TimerType.Ascending ? "acsending|asc" : "descending|desc?") + @")\s+timer\s+([0-" + (char)('/' + _a) + @"]\s*[0-" + (char)('/' + _b) + @"])\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             var m = rx.Match(command);
-            if (!_running && Regex.IsMatch(command, @"^\s*(?:" + (FlavorType == TimerType.Ascending ? "acsending|asc" : "descending|desc?") + @")\s+timer\s+reset\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+            if (!_running && Regex.IsMatch(command, @"^\s*(?:" + (FlavorType == TimerType.Ascending ? "ascending|asc" : "descending|desc?") + @")\s+timer\s+reset\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
                 || m.Success)
             {
                 return ProcessTwitchCommandInternal(m.Success ? m.Groups[1].Value : "");
