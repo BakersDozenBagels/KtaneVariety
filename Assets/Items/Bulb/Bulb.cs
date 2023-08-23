@@ -11,10 +11,8 @@ namespace Variety
     {
         public override string TwitchHelpMessage { get { return "!{0} red bulb ..- [transmit ..- on the red bulb] | !{0} red bulb reset [show flashing code again]"; } }
 
-        private bool _colorblind;
         public override void SetColorblind(bool on)
         {
-            _colorblind = on;
             ColorblindText.gameObject.SetActive(on);
             ColorblindText.text = _colorblindNames[(int)Color];
         }
