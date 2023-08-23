@@ -405,6 +405,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Editor\Variety-Editor.asmdef" />
+    <None Include="Assets\Items\CoordinateGrid\license.txt" />
+    <None Include="Assets\Items\CoordinateGrid\readme.txt" />
     <None Include="Assets\Plugins\Managed\KMFramework.XML" />
     <None Include="Assets\Plugins\Managed\Newtonsoft.Json_license.txt" />
     <None Include="Assets\Plugins\Steamworks.NET\redist\steam_appid.txt" />

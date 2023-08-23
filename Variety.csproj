@@ -321,6 +321,9 @@
     <Compile Include="Assets\Items\ColoredKeypad\ColoredKeypadFactory.cs" />
     <Compile Include="Assets\Items\ColoredKeypad\ColoredKeypadPrefab.cs" />
     <Compile Include="Assets\Items\ColoredKeypad\ColoredKeypadSize.cs" />
+    <Compile Include="Assets\Items\CoordinateGrid\CoordinateGrid.cs" />
+    <Compile Include="Assets\Items\CoordinateGrid\CoordinateGridFactory.cs" />
+    <Compile Include="Assets\Items\CoordinateGrid\CoordinateGridPrefab.cs" />
     <Compile Include="Assets\Items\Dial\Dial.cs" />
     <Compile Include="Assets\Items\Dial\DialColor.cs" />
     <Compile Include="Assets\Items\Dial\DialFactory.cs" />
@@ -403,6 +406,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Editor\Variety-Editor.asmdef" />
+    <None Include="Assets\Items\CoordinateGrid\license.txt" />
+    <None Include="Assets\Items\CoordinateGrid\readme.txt" />
     <None Include="Assets\Plugins\Managed\KMFramework.XML" />
     <None Include="Assets\Plugins\Managed\Newtonsoft.Json_license.txt" />
     <None Include="Assets\Plugins\Steamworks.NET\redist\steam_appid.txt" />
