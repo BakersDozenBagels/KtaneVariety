@@ -53,6 +53,7 @@ public class VarietyModule : MonoBehaviour
     public TimerPrefab TimerTemplate;
     public BulbPrefab BulbTemplate;
     public DialPrefab DialTemplate;
+    public CoordinateGridPrefab CoordinateGridTemplate;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId;
@@ -114,7 +115,8 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(2, new DieFactory()),
             new ItemFactoryInfo(3, new TimerFactory()),
             new ItemFactoryInfo(2, new BulbFactory()),
-            new ItemFactoryInfo(2, new DialFactory())
+            new ItemFactoryInfo(2, new DialFactory()),
+            new ItemFactoryInfo(10, new CoordinateGridFactory())
             );
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
@@ -393,6 +395,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]",
         "!{0} red bulb ..- [transmit ..- on the red bulb] | !{0} red bulb reset [show flashing code again]",
         "!{0} red dial 0 [turn dial that many times] !{0} red dial cycle [turn the dial slowly]",
+        "!{0} 3x3 grid 6 [selects the 6th coordinate in reading order in the 3×3 coordinate grid]",
         "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414

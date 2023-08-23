@@ -187,5 +187,10 @@ namespace Variety
             }
             return list;
         }
+
+        public static TOut Apply<T, TOut>(this T obj, Func<T, TOut> selector)
+        {
+            return selector(obj);
+        }
     }
 }

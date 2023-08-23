@@ -378,6 +378,8 @@ MonoBehaviour:
     type: 2}
   DialTemplate: {fileID: 114822228667576744, guid: eb8fcb39fe5b8b84c8ad364b69379eb8,
     type: 2}
+  CoordinateGridTemplate: {fileID: 114923669600748692, guid: 3ee43b26b93f2294182eae9a93828487,
+    type: 2}
 --- !u!114 &11489324
 MonoBehaviour:
   m_ObjectHideFlags: 1
