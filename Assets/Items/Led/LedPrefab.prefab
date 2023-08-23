@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 23821808908416632}
   - component: {fileID: 102597723769801824}
   - component: {fileID: 114223149807512552}
+  - component: {fileID: 114325688328476152}
   m_Layer: 0
   m_Name: Colorblind
   m_TagString: Untagged
@@ -341,7 +342,7 @@ MonoBehaviour:
   - KT/Mobile/DiffuseTint
 --- !u!114 &114325688328476152
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1961764884754588}

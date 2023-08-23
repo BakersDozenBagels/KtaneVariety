@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 23164112855739390}
   - component: {fileID: 102660272746979636}
   - component: {fileID: 114228543417213446}
+  - component: {fileID: 114559690500274794}
   m_Layer: 0
   m_Name: Colorblind
   m_TagString: Untagged

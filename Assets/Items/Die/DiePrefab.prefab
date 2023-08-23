@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 114552078322521884}
   - component: {fileID: 135756342494315934}
   - component: {fileID: 114217658615624668}
+  - component: {fileID: 114494473755240656}
   m_Layer: 0
   m_Name: Arrow0
   m_TagString: Untagged
@@ -1222,7 +1223,7 @@ MonoBehaviour:
   OutlineAmount: 0
 --- !u!114 &114494473755240656
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1748772626790524}

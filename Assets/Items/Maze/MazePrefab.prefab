@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 23059308828210412}
   - component: {fileID: 102670496493257278}
   - component: {fileID: 114037720999207932}
+  - component: {fileID: 114666238421561564}
   m_Layer: 0
   m_Name: Colorblind
   m_TagString: Untagged
@@ -1213,7 +1214,7 @@ MonoBehaviour:
   OutlineAmount: 0
 --- !u!114 &114666238421561564
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1285456202805538}
