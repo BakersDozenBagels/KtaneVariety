@@ -75,7 +75,7 @@ namespace Variety
                 _dial.AddInteractionPunch(.25f);
                 Rotation += 1;
                 Rotation %= 8;
-                Module.Audio.PlayGameSoundAtTransform(RealTicks[Rotation] ? KMSoundOverride.SoundEffect.BigButtonPress : KMSoundOverride.SoundEffect.ButtonPress, _dial.transform);
+                Module.Audio.PlayGameSoundAtTransform(RealTicks[Rotation] ? KMSoundOverride.SoundEffect.ButtonPress : KMSoundOverride.SoundEffect.BigButtonPress, _dial.transform);
 #if UNITY_EDITOR
                 Debug.Log(RealTicks[Rotation] ? "Click" : "No click");
 #endif
