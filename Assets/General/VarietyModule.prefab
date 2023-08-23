@@ -376,6 +376,8 @@ MonoBehaviour:
     type: 2}
   BulbTemplate: {fileID: 114492801619584482, guid: 30919e8fc4312ff468906793a5dc0814,
     type: 2}
+  DialTemplate: {fileID: 114822228667576744, guid: eb8fcb39fe5b8b84c8ad364b69379eb8,
+    type: 2}
 --- !u!114 &11489324
 MonoBehaviour:
   m_ObjectHideFlags: 1

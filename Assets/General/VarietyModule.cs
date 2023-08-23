@@ -52,6 +52,7 @@ public class VarietyModule : MonoBehaviour
     public DiePrefab DieTemplate;
     public TimerPrefab TimerTemplate;
     public BulbPrefab BulbTemplate;
+    public DialPrefab DialTemplate;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId;
@@ -112,7 +113,8 @@ public class VarietyModule : MonoBehaviour
 
             new ItemFactoryInfo(2, new DieFactory()),
             new ItemFactoryInfo(1, new TimerFactory()),
-            new ItemFactoryInfo(2, new BulbFactory())
+            new ItemFactoryInfo(2, new BulbFactory()),
+            new ItemFactoryInfo(2, new DialFactory())
             );
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
@@ -162,13 +164,13 @@ public class VarietyModule : MonoBehaviour
             Module.OnActivate += item.OnActivate;
 
 #if UNITY_EDITOR
-        //for (var cell = 0; cell < W * H; cell++)
-        //{
-        //    var dummy = Instantiate(DummyTemplate, transform);
-        //    dummy.transform.localPosition = new Vector3(GetX(cell), .01501f, GetY(cell));
-        //    dummy.transform.localEulerAngles = new Vector3(90, 0, 0);
-        //    dummy.Renderer.sharedMaterial = takens.Contains(cell) ? dummy.Black : dummy.White;
-        //}
+        for(var cell = 0; cell < W * H; cell++)
+        {
+            var dummy = Instantiate(DummyTemplate, transform);
+            dummy.transform.localPosition = new Vector3(GetX(cell), .01501f, GetY(cell));
+            dummy.transform.localEulerAngles = new Vector3(90, 0, 0);
+            dummy.Renderer.sharedMaterial = takens.Contains(cell) ? dummy.Black : dummy.White;
+        }
 #endif
 
         items.Sort((a, b) => Array.IndexOf(_flavorOrder, a.Flavor).CompareTo(Array.IndexOf(_flavorOrder, b.Flavor)));
@@ -390,6 +392,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} die 1234 [press the rotation buttons; buttons are numbered from the one pointing towards the status light going clockwise]",
         "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]",
         "!{0} red bulb ..- [transmit ..- on the red bulb] | !{0} red bulb reset [show flashing code again]",
+        "!{0} red dial 0 [turn dial that many times] !{0} red dial cycle [turn the dial slowly]",
         "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414
