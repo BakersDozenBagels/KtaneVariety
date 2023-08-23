@@ -68,7 +68,7 @@ namespace Variety
 
             _dial = prefab.Dial;
             _dial.GetComponentInChildren<TextMesh>(true).text = Color.ToString().Substring(0, 1);
-            _dial.GetComponent<Renderer>().sharedMaterial = prefab.Materials[(int)Color];
+            _dial.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial = prefab.Materials[(int)Color];
             _dial.transform.localRotation = Quaternion.Euler(0f, 45f * Rotation, 0f);
             _dial.OnInteract = delegate
             {
