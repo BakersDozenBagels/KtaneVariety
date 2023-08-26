@@ -18,7 +18,7 @@ namespace Variety
 
         public override Item Generate(VarietyModule module, HashSet<object> taken, Random rnd)
         {
-            var availableCells = Enumerable.Range(0, W * H).Where(c => isRectAvailable(taken, c, 3, 2)).ToArray();
+            var availableCells = Enumerable.Range(0, W * H).Where(c => isRectAvailable(taken, c, 2, 2)).ToArray();
             if(availableCells.Length == 0)
                 return null;
 
@@ -27,7 +27,7 @@ namespace Variety
                 return null;
 
             var cell = availableCells[rnd.Next(0, availableCells.Length)];
-            claimRect(taken, cell, 3, 2);
+            claimRect(taken, cell, 2, 2);
 
             var flavor = availableFlavors[rnd.Next(0, availableFlavors.Length)];
             taken.Add(flavor);

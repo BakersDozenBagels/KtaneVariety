@@ -30,6 +30,7 @@ namespace Variety
         {
             _running = true;
             _timer = _prefab.StartCoroutine(RunTimer());
+            _prefab.StartCoroutine(RunTimerColon());
             _active = true;
         }
 
@@ -44,7 +45,7 @@ namespace Variety
         public override IEnumerable<ItemSelectable> SetUp(Random rnd)
         {
             _prefab = Object.Instantiate(Module.TimerTemplate, Module.transform);
-            _prefab.transform.localPosition = new Vector3(GetXOfCellRect(Cells[0], 3), .015f, GetYOfCellRect(Cells[0], 2));
+            _prefab.transform.localPosition = new Vector3(GetXOfCellRect(Cells[0], 2), .015f, GetYOfCellRect(Cells[0], 2));
             _prefab.transform.localScale = Vector3.one;
             _prefab.Selectable.OnInteract += Press;
             yield return new ItemSelectable(_prefab.Selectable, Cells[0]);
@@ -82,14 +83,27 @@ namespace Variety
                 if (FlavorType == TimerType.Descending)
                     t = NumPositions - 1 - t;
                 _displayedTime = t;
-                _prefab.Text.text = FormatTime(t);
+                _prefab.LeftDigit.SetDigit(t / _b);
+                _prefab.RightDigit.SetDigit(t % _b);
                 yield return null;
+            }
+        }
+
+        private IEnumerator RunTimerColon()
+        {
+            const float delay = 0.66f;
+            while (true)
+            {
+                _prefab.Colon.color = "DFF3FFFF".Color();
+                yield return new WaitForSeconds(delay);
+                _prefab.Colon.color = "292E31FF".Color();
+                yield return new WaitForSeconds(delay);
             }
         }
 
         private string FormatTime(int t)
         {
-            return (t / _b) + " " + (t % _b);
+            return (t / _b) + ":" + (t % _b);
         }
 
         public override string DescribeSolutionState(int state)

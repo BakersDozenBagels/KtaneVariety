@@ -3,5 +3,6 @@
 public class TimerPrefab : MonoBehaviour
 {
     public KMSelectable Selectable;
-    public TextMesh Text;
+    public TextMesh Colon;
+    public SevenSegment LeftDigit, RightDigit;
 }
