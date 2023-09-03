@@ -111,7 +111,7 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(10, new MazeFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new LetterDisplayFactory()),
 
-            new ItemFactoryInfo(2, new DieFactory()),
+            new ItemFactoryInfo(1, new DieFactory()),
             new ItemFactoryInfo(2, new TimerFactory()),
             new ItemFactoryInfo(2, new BulbFactory()),
             new ItemFactoryInfo(2, new DialFactory())
