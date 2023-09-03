@@ -9,7 +9,7 @@ namespace Variety
 {
     public class Dial : Item
     {
-        public override string TwitchHelpMessage { get { return "!{0} red dial 0 [turn dial that many times] !{0} red dial cycle [turn the dial slowly]"; } }
+        public override string TwitchHelpMessage { get { return "!{0} red knob 0 [turn knob that many times] !{0} red knob cycle [turn the knob slowly]"; } }
 
         public override void SetColorblind(bool on)
         {
@@ -67,7 +67,7 @@ namespace Variety
             prefab.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
             _dial = prefab.Dial;
-            _dial.GetComponentInChildren<TextMesh>(true).text = Color.ToString().Substring(0, 1);
+            _dial.GetComponentInChildren<TextMesh>(true).text = Color == DialColor.Black ? "" : Color.ToString().Substring(0, 1);
             _dial.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial = prefab.Materials[(int)Color];
             _dial.transform.localRotation = Quaternion.Euler(0f, 45f * Rotation, 0f);
             _dial.OnInteract = delegate
@@ -85,21 +85,21 @@ namespace Variety
             yield return new ItemSelectable(_dial, Cells[0]);
         }
 
-        public override string ToString() { return string.Format("{0} dial ({1} clicks)", ColorName, RealTicks.Count(b => b)); }
+        public override string ToString() { return string.Format("{0} knob ({1} clicks)", ColorName, RealTicks.Count(b => b)); }
         public override int NumStates { get { return RealTicks.Count(b => b); } }
         public override object Flavor { get { return Color; } }
         private static readonly string[] Ord = new string[] { "0th", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th" };
-        private string ColorName { get { return new string[] { "red", "green", "blue", "yellow" }[(int)Color]; } }
-        public override string DescribeSolutionState(int state) { return string.Format("set the {0} dial to the {1} clicking spot", ColorName, Ord[state]); }
-        public override string DescribeWhatUserDid() { return string.Format("you turned the {0} dial", ColorName); }
-        public override string DescribeWhatUserShouldHaveDone(int desiredState) { return string.Format("you should have set the {0} dial to the {1} clicking spot (instead of {3}{2})", ColorName, Ord[desiredState], State != -1 ? Ord[State] : "a non-clicking spot", State != -1 ? "the " : ""); }
+        private string ColorName { get { return new string[] { "red", "black", "blue", "yellow" }[(int)Color]; } }
+        public override string DescribeSolutionState(int state) { return string.Format("set the {0} knob to the {1} clicking spot", ColorName, Ord[state]); }
+        public override string DescribeWhatUserDid() { return string.Format("you turned the {0} knob", ColorName); }
+        public override string DescribeWhatUserShouldHaveDone(int desiredState) { return string.Format("you should have set the {0} knob to the {1} clicking spot (instead of {3}{2})", ColorName, Ord[desiredState], State != -1 ? Ord[State] : "a non-clicking spot", State != -1 ? "the " : ""); }
 
         public override IEnumerator ProcessTwitchCommand(string command)
         {
-            var m = Regex.Match(command, @"^\s*" + ColorName + @"\s+dial\s+cycle((?:fast)?)\s*$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+            var m = Regex.Match(command, @"^\s*" + ColorName + @"\s+knob\s+cycle((?:fast)?)\s*$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
             if(m.Success)
                 return TwitchCycle(m.Groups[1].Value.Length != 0).GetEnumerator();
-            m = Regex.Match(command, @"^\s*" + ColorName + @"\s+dial\s+(\d)\s*$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+            m = Regex.Match(command, @"^\s*" + ColorName + @"\s+knob\s+(\d)\s*$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
             int val;
             if(m.Success && int.TryParse(m.Groups[1].Value, out val) && val > 0 && val < 8)
                 return TwitchPress(val).GetEnumerator();

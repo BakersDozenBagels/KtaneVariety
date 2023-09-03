@@ -377,7 +377,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} key 0 [turn the key-in-lock at last timer digit]",
         "!{0} 1x3 keys 012 [press keys on the 1×3 white keypad in that order]",
         "!{0} red keys 01 [press those keys on the red keypad]",
-        "!{0} knob 0 [turn knob to that many tickmarks from north]",
+        "!{0} knob 0 [turn the white knob to that many tickmarks from north]",
         "!{0} red button mash 3 [mash the red button that many times]",
         "!{0} red button hold 2 [hold the red button over that many timer ticks]",
         "!{0} digit 0 [set the digit display]",
@@ -392,7 +392,7 @@ public class VarietyModule : MonoBehaviour
         "!{0} die 1234 [press the rotation buttons; buttons are numbered from the one pointing towards the status light going clockwise]",
         "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]",
         "!{0} red bulb ..- [transmit ..- on the red bulb] | !{0} red bulb reset [show flashing code again]",
-        "!{0} red dial 0 [turn dial that many times] !{0} red dial cycle [turn the dial slowly]",
+        "!{0} red knob 0 [turn knob that many times] !{0} red knob cycle [turn the knob slowly]",
         "!{0} colorblind"
     }.Join(" | ");
 #pragma warning restore 414

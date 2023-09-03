@@ -1,7 +1,7 @@
 ﻿public enum DialColor
 {
     Red, 
-    Green,
+    Black,
     Blue,
     Yellow
 }
