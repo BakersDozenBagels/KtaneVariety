@@ -37,9 +37,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4128067108113616}
-  - component: {fileID: 114822228667576744}
+  - component: {fileID: 114527431237679436}
   m_Layer: 0
-  m_Name: DialPrefab
+  m_Name: ColoredKnobPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1733954020234036}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.00009999983, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0001, z: 0}
   m_LocalScale: {x: 0.13, y: 0.13, z: 0.13}
   m_Children: []
   m_Father: {fileID: 4128067108113616}
@@ -297,6 +297,23 @@ MonoBehaviour:
   ShaderNames:
   - KT/Mobile/DiffuseTint
   - KT/Mobile/DiffuseTint
+--- !u!114 &114527431237679436
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1371341030525628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba480f281f480a546a3815b2967fdf27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dial: {fileID: 114763429153775886}
+  Materials:
+  - {fileID: 2100000, guid: 41f0ba11a8bf5eb40bde50be0cfb4f78, type: 2}
+  - {fileID: 2100000, guid: 3171eafebe8b49545a65bde6abaf1b31, type: 2}
+  - {fileID: 2100000, guid: 30924bcdccd398f499f264c6d832524f, type: 2}
+  - {fileID: 2100000, guid: 8cb6af6e5fde5754886504c3346bfc1a, type: 2}
 --- !u!114 &114763429153775886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,23 +337,6 @@ MonoBehaviour:
   AllowSelectionWrapY: 0
   ForceSelectionHighlight: 0
   ForceInteractionHighlight: 0
---- !u!114 &114822228667576744
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1371341030525628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 722badf2a551fce49b4e5bf9e47df8a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Dial: {fileID: 114763429153775886}
-  Materials:
-  - {fileID: 2100000, guid: 41f0ba11a8bf5eb40bde50be0cfb4f78, type: 2}
-  - {fileID: 2100000, guid: 3171eafebe8b49545a65bde6abaf1b31, type: 2}
-  - {fileID: 2100000, guid: 30924bcdccd398f499f264c6d832524f, type: 2}
-  - {fileID: 2100000, guid: 8cb6af6e5fde5754886504c3346bfc1a, type: 2}
 --- !u!114 &114946014199315616
 MonoBehaviour:
   m_ObjectHideFlags: 1

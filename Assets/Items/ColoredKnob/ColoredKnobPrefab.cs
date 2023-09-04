@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DialPrefab : MonoBehaviour
+public class ColoredKnobPrefab : MonoBehaviour
 {
     public KMSelectable Dial;
     public Material[] Materials;

@@ -368,10 +368,8 @@ MonoBehaviour:
   BulbColors:
   - {fileID: 2100000, guid: ac99c222f50acb243a63a8f4c90ac03c, type: 2}
   - {fileID: 2100000, guid: 9c1fe88cdaeacd54badde599936a8069, type: 2}
-  - {fileID: 2100000, guid: 7e0bef7982b30024dbbbdf7d8744bf21, type: 2}
   - {fileID: 2100000, guid: 7d53da896072be046bad9e52ded476e1, type: 2}
   - {fileID: 2100000, guid: 7939ab6c54a3c584aa33d43c873515d3, type: 2}
-  - {fileID: 2100000, guid: da61984212d9bcd45869a6af765dfc14, type: 2}
 --- !u!114 &114710681509871410
 MonoBehaviour:
   m_ObjectHideFlags: 1

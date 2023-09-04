@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using KModkit;
-
-using Rnd = UnityEngine.Random;
 
 namespace Variety
 {
-    public class DialFactory : ItemFactory
+    public class ColoredKnobFactory : ItemFactory
     {
+        private readonly int[] _baseRotations;
+
+        public ColoredKnobFactory(MonoRandom ruleSeedRnd)
+        {
+            _baseRotations = ruleSeedRnd.ShuffleFisherYates(Enumerable.Range(0, 4).ToArray());
+        }
+
         public override Item Generate(VarietyModule module, HashSet<object> taken, Random rnd)
         {
-            var available = Enum.GetValues(typeof(DialColor)).Cast<DialColor>().Where(c => !taken.Contains(c)).ToArray();
+            var available = Enum.GetValues(typeof(ColoredKnobColor)).Cast<ColoredKnobColor>().Where(c => !taken.Contains(c)).ToArray();
             if (available.Length == 0)
                 return null;
 
@@ -25,9 +29,9 @@ namespace Variety
             taken.Add(color);
             int n = rnd.Next(3, 7);
 
-            return new Dial(module, spot, color, n, rnd);
+            return new ColoredKnob(module, spot, color, _baseRotations[(int) color], n, rnd);
         }
 
-        public override IEnumerable<object> Flavors { get { return Enum.GetValues(typeof(DialColor)).Cast<object>(); } }
+        public override IEnumerable<object> Flavors => Enum.GetValues(typeof(ColoredKnobColor)).Cast<object>();
     }
 }

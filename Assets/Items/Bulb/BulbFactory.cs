@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Rnd = UnityEngine.Random;
+using UnityEngine;
 
 namespace Variety
 {
     public class BulbFactory : ItemFactory
     {
-        public override Item Generate(VarietyModule module, HashSet<object> taken, Random rnd)
+        public BulbFactory(MonoRandom ruleSeedRnd)
         {
-            var availableColors = ((Bulb.BulbColor[])Enum.GetValues(typeof(Bulb.BulbColor))).Where(col => !taken.Contains(col)).ToArray();
+            _aFirst = ruleSeedRnd.Next(0, 2) != 0;
+        }
+
+        private readonly bool _aFirst;
+
+        public override Item Generate(VarietyModule module, HashSet<object> taken, System.Random rnd)
+        {
+            var availableColors = ((BulbColor[]) Enum.GetValues(typeof(BulbColor))).Where(col => !taken.Contains(col)).ToArray();
             if (availableColors.Length == 0)
                 return null;
 
@@ -22,11 +28,12 @@ namespace Variety
             var color = availableColors[rnd.Next(0, availableColors.Length)];
             claimRect(taken, topLeftCell, 2, 2);
             taken.Add(color);
-            var x = (float)rnd.NextDouble() * 1.5f;
-            int y = UnityEngine.Mathf.CeilToInt(UnityEngine.Mathf.Pow(2, 5f - x) * 26f / 32f);
-            return new Bulb(module, topLeftCell, color, y);
+
+            return new Bulb(module, topLeftCell, color, (color == BulbColor.Yellow ^ _aFirst) ? 'A' : 'M',
+                // Determine N between 5 and 13, with higher numbers slightly less likely
+                n: Mathf.CeilToInt(Mathf.Pow(2, 5f - (float) rnd.NextDouble() * 1.5f) * 13f / 32f));
         }
 
-        public override IEnumerable<object> Flavors { get { return Enum.GetValues(typeof(Bulb.BulbColor)).Cast<object>(); } }
+        public override IEnumerable<object> Flavors => Enum.GetValues(typeof(BulbColor)).Cast<object>();
     }
 }

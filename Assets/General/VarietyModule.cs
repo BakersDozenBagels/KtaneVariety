@@ -52,7 +52,7 @@ public class VarietyModule : MonoBehaviour
     public DiePrefab DieTemplate;
     public TimerPrefab TimerTemplate;
     public BulbPrefab BulbTemplate;
-    public DialPrefab DialTemplate;
+    public ColoredKnobPrefab ColoredKnobTemplate;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId;
@@ -88,19 +88,21 @@ public class VarietyModule : MonoBehaviour
     private bool _isSolved;
     private bool _colorblindEnabled;
 
-    static List<T> makeList<T>(params T[] items) { return new List<T>(items); }
-
     void Awake()
     {
         _moduleId = _moduleIdCounter++;
 
         var ruleSeedRnd = RuleSeedable.GetRNG();
 
-        var factories = makeList(
+        var factories = Ut.NewArray(
             new ItemFactoryInfo(1, new WireFactory(ruleSeedRnd)),
+            new ItemFactoryInfo(1, new DieFactory()),
             new ItemFactoryInfo(2, new KeyFactory()),
             new ItemFactoryInfo(2, new LedFactory(ruleSeedRnd)),
             new ItemFactoryInfo(2, new SwitchFactory()),
+            new ItemFactoryInfo(2, new TimerFactory()),
+            new ItemFactoryInfo(2, new BulbFactory(ruleSeedRnd)),
+            new ItemFactoryInfo(2, new ColoredKnobFactory(ruleSeedRnd)),
             new ItemFactoryInfo(3, new KnobFactory()),
             new ItemFactoryInfo(4, new ButtonFactory(ruleSeedRnd)),
             new ItemFactoryInfo(5, new BrailleDisplayFactory()),
@@ -109,13 +111,7 @@ public class VarietyModule : MonoBehaviour
             new ItemFactoryInfo(7, new KeypadFactory()),
             new ItemFactoryInfo(7, new ColoredKeypadFactory(ruleSeedRnd)),
             new ItemFactoryInfo(10, new MazeFactory(ruleSeedRnd)),
-            new ItemFactoryInfo(10, new LetterDisplayFactory()),
-
-            new ItemFactoryInfo(1, new DieFactory()),
-            new ItemFactoryInfo(2, new TimerFactory()),
-            new ItemFactoryInfo(2, new BulbFactory()),
-            new ItemFactoryInfo(2, new DialFactory())
-            );
+            new ItemFactoryInfo(10, new LetterDisplayFactory()));
 
         _flavorOrder = factories.SelectMany(inf => inf.Factory.Flavors).ToArray();
         ruleSeedRnd.ShuffleFisherYates(_flavorOrder);
@@ -160,11 +156,11 @@ public class VarietyModule : MonoBehaviour
         ModuleSelectable.ChildRowLength = W;
         ModuleSelectable.UpdateChildren();
 
-        foreach(var item in items)
+        foreach (var item in items)
             Module.OnActivate += item.OnActivate;
 
 #if UNITY_EDITOR
-        for(var cell = 0; cell < W * H; cell++)
+        for (var cell = 0; cell < W * H; cell++)
         {
             var dummy = Instantiate(DummyTemplate, transform);
             dummy.transform.localPosition = new Vector3(GetX(cell), .01501f, GetY(cell));

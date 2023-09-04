@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -34,10 +33,11 @@ namespace Variety
             _active = true;
         }
 
-        public override int NumStates { get { return NumPositions; } }
-        public override object Flavor { get { return FlavorType; } }
+        public override int NumStates => NumPositions;
+        public override object Flavor => FlavorType;
 
-        private int _displayedTime, _a, _b;
+        private readonly int _a, _b;
+        private int _displayedTime;
         private bool _running, _active;
         private TimerPrefab _prefab;
         private Coroutine _timer;
@@ -79,7 +79,7 @@ namespace Variety
             float startTime = Time.time - _displayedTime;
             while (true)
             {
-                int t = (int)(Time.time - startTime) % NumPositions;
+                var t = (int) (Time.time - startTime) % NumPositions;
                 if (FlavorType == TimerType.Descending)
                     t = NumPositions - 1 - t;
                 _displayedTime = t;
@@ -94,68 +94,55 @@ namespace Variety
             const float delay = 0.66f;
             while (true)
             {
-                _prefab.Colon.color = "DFF3FFFF".Color();
+                _prefab.Colon.color = new Color32(0xDF, 0xF3, 0xFF, 0xFF);
                 yield return new WaitForSeconds(delay);
-                _prefab.Colon.color = "292E31FF".Color();
+                _prefab.Colon.color = new Color32(0x29, 0x2E, 0x31, 0xFF);
                 yield return new WaitForSeconds(delay);
             }
         }
 
-        private string FormatTime(int t)
-        {
-            return (t / _b) + ":" + (t % _b);
-        }
+        private string FormatTime(int t) => $"{t / _b}:{t % _b}";
+        public override string DescribeSolutionState(int state) => $"set the {FlavorType.ToString().ToLowerInvariant()} timer to {FormatTime(state)}";
+        public override string DescribeWhatUserDid() => _running
+            ? $"you left the {FlavorType.ToString().ToLowerInvariant()} timer running"
+            : $"you set the {FlavorType.ToString().ToLowerInvariant()} timer to {FormatTime(State)}";
+        public override string DescribeWhatUserShouldHaveDone(int desiredState) => $"you should have set the {FlavorType.ToString().ToLowerInvariant()} timer to {FormatTime(desiredState)} ({(_running ? "you left it running" : "instead of " + FormatTime(State))})";
 
-        public override string DescribeSolutionState(int state)
-        {
-            return string.Format("set the {0} timer to {1}", FlavorType.ToString().ToLowerInvariant(), FormatTime(state));
-        }
+        public override string ToString() => $"{FlavorType} timer ({_a}×{_b})";
 
-        public override string DescribeWhatUserDid()
-        {
-            if (_running)
-                return string.Format("you left the {0} timer running", FlavorType.ToString().ToLowerInvariant());
-            else
-                return string.Format("you set the {0} timer to {1}", FlavorType.ToString().ToLowerInvariant(), FormatTime(State));
-        }
-
-        public override string DescribeWhatUserShouldHaveDone(int desiredState)
-        {
-            return string.Format("you should have set the {0} timer to {1} (you {2})", FlavorType.ToString().ToLowerInvariant(), FormatTime(desiredState), _running ? "left it running" : "set it to " + FormatTime(State));
-        }
-
-        public override string ToString() { return string.Format("{0} timer ({1}x{2})", FlavorType, _a, _b); }
-
-        public override string TwitchHelpMessage { get { return "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]"; } }
+        public override string TwitchHelpMessage => "!{0} ascending timer 02 [stops the timer at that value] | !{0} ascending timer reset [restarts the timer running]";
 
         public override IEnumerator ProcessTwitchCommand(string command)
         {
-            var rx = new Regex(@"^\s*(?:" + (FlavorType == TimerType.Ascending ? "acsending|asc" : "descending|desc?") + @")\s+timer\s+([0-" + (char)('/' + _a) + @"]\s*[0-" + (char)('/' + _b) + @"])\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-            var m = rx.Match(command);
-            if (!_running && Regex.IsMatch(command, @"^\s*(?:" + (FlavorType == TimerType.Ascending ? "ascending|asc" : "descending|desc?") + @")\s+timer\s+reset\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
-                || m.Success)
-            {
-                return ProcessTwitchCommandInternal(m.Success ? m.Groups[1].Value : "");
-            }
+            var flavorRegex = $"(?:{(FlavorType == TimerType.Ascending ? "ascending|asc" : "descending|desc?")})";
+            var m = Regex.Match(command,
+                $@"^\s*{flavorRegex}\s+timer\s+(?<first>[0-{(char) ('0' + _a - 1)}])\s*(?<last>[0-{(char) ('0' + _b - 1)}])\s*",
+                RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+            if (m.Success)
+                return ProcessTwitchCommandInternal(m.Groups["first"].Value[0] - '0', m.Groups["last"].Value[0] - '0');
+
+            if (!_running && Regex.IsMatch(command, $@"^\s*{flavorRegex}\s+timer\s+reset\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                return ProcessTwitchReset();
+
             return null;
         }
 
-        public IEnumerator ProcessTwitchCommandInternal(string command)
+        public IEnumerator ProcessTwitchReset()
         {
-            if (command.Length == 0)
-            {
-                _prefab.Selectable.OnInteract();
-                yield return new WaitForSeconds(0.1f);
-                yield break;
-            }
+            _prefab.Selectable.OnInteract();
+            yield return new WaitForSeconds(0.1f);
+        }
 
+        public IEnumerator ProcessTwitchCommandInternal(int first, int last)
+        {
             if (!_running)
             {
                 _prefab.Selectable.OnInteract();
                 yield return new WaitForSeconds(0.1f);
             }
 
-            var state = (command.First() - '0') * _b + command.Last() - '0';
+            var state = first * _b + last;
             yield return new WaitUntil(() => _displayedTime == state);
             _prefab.Selectable.OnInteract();
             yield return new WaitForSeconds(0.1f);
@@ -169,10 +156,13 @@ namespace Variety
             if (!_running)
             {
                 _prefab.Selectable.OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(.1f);
             }
-            yield return new WaitUntil(() => _displayedTime == desiredState);
+
+            while (_displayedTime != desiredState)
+                yield return true;
             _prefab.Selectable.OnInteract();
+            yield return new WaitForSeconds(.1f);
         }
     }
 }
