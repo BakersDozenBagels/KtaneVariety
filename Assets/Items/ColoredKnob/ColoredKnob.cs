@@ -68,7 +68,7 @@ namespace Variety
             prefab.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
             _coloredKnob = prefab.Dial;
-            _coloredKnob.GetComponentInChildren<TextMesh>(true).text = Color.ToString().Substring(0, 1);
+            _coloredKnob.GetComponentInChildren<TextMesh>(true).text = Color == ColoredKnobColor.Black ? "" : Color.ToString().Substring(0, 1);
             _coloredKnob.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial = prefab.Materials[(int) Color];
             _coloredKnob.transform.localRotation = Quaternion.Euler(0f, 45f * Rotation, 0f);
             _coloredKnob.OnInteract = delegate

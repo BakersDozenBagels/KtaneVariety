@@ -71,6 +71,7 @@ namespace Variety
             var lastTime = -1f;
             var held = false;
             var delays = new List<float>();
+            Coroutine wait = null;
             _button.OnInteract = delegate
             {
                 if (_morseCycle != null)
@@ -81,12 +82,16 @@ namespace Variety
                         _cyclingState = BulbState.Inputting;
                         lastTime = Time.time;
                         held = true;
+                        if (wait != null)
+                            Module.StopCoroutine(wait);
                         _prefab.Bulb.sharedMaterial = _prefab.BulbColors[(int) Color + 2];
                         break;
                     case BulbState.Inputting:
                         delays.Add(Time.time - lastTime);
                         lastTime = Time.time;
                         held = true;
+                        if (wait != null)
+                            Module.StopCoroutine(wait);
                         _prefab.Bulb.sharedMaterial = _prefab.BulbColors[(int) Color + 2];
                         break;
                     case BulbState.Echoing:
@@ -106,7 +111,7 @@ namespace Variety
                 delays.Add(Time.time - lastTime);
                 lastTime = Time.time;
                 held = false;
-                Module.StartCoroutine(Delay(() => Time.time - lastTime < 2f, () => held, () => { ProcessInput(delays); delays.Clear(); }));
+                wait = Module.StartCoroutine(Delay(() => Time.time - lastTime < 2f, () => held, () => { if (held) return; ProcessInput(delays); delays.Clear(); }));
             };
             yield return new ItemSelectable(_button, Cells[0]);
         }
