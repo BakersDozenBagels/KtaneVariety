@@ -29,7 +29,7 @@ namespace Variety
             claimRect(taken, topLeftCell, 2, 2);
             taken.Add(color);
 
-            return new Bulb(module, topLeftCell, color, (color == BulbColor.Yellow ^ _aFirst) ? 'A' : 'N',
+            return new Bulb(module, topLeftCell, color, (color == BulbColor.YellowBulb ^ _aFirst) ? 'A' : 'N',
                 // Determine N between 5 and 13, with higher numbers slightly less likely
                 n: Mathf.CeilToInt(Mathf.Pow(2, 5f - (float) rnd.NextDouble() * 1.5f) * 13f / 32f));
         }
